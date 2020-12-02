@@ -1,0 +1,45 @@
+
+name: Monroe
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+        - names: apt 
+        - run: sudo apt-get update
+        - run: sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+        - run: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        - run: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        - run: sudo apt-get update
+        - run: sudo apt-get install docker-ce docker-ce-cli containerd.io
+        - run: sudo usermod -aG docker ${USER}
+        - run: sudo su - ${USER}
+        #Not sure if all these run statements are needed, or if we can incorporate another yaml inside of this one
+        
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with: 
+           repository: staphb_toolkit/staphb_toolkit/workflows/monroe
+          path: monroe
+      - name: directory structure
+        run: tree -d $GITHUB_WORKSPACE
+      - name: ls bin dir
+        run: ls -lh $GITHUB_WORKSPACE/monroe/bin
+      - name: test monroe
+        run: |
+         export PATH=$GITHUB_WORKSPACE/monroe/bin:$PATH
+         monroe --version
+         monroe --help
