@@ -19,17 +19,16 @@ jobs:
     steps:
         - names: pip 
         - run: pip install staphb_toolkit
-            
-      - uses: actions/checkout@v2
+        - uses: actions/checkout@v2
         with: 
            repository: staphb_toolkit/staphb_toolkit/workflows/monroe
           path: monroe
-      - name: directory structure
-        run: tree -d $GITHUB_WORKSPACE
-      - name: ls bin dir
-        run: ls -lh $GITHUB_WORKSPACE/monroe/bin
-      - name: test monroe
-        run: |
+       - name: directory structure
+       - run: tree -d $GITHUB_WORKSPACE
+       - name: ls bin dir
+       - run: ls -lh $GITHUB_WORKSPACE/monroe/bin
+       - name: test monroe
+       - run: |
          export PATH=$GITHUB_WORKSPACE/monroe/bin:$PATH
          monroe --version
          monroe --help
