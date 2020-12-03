@@ -19,8 +19,7 @@ jobs:
     steps:
         - names: pip 
         - run: pip install staphb_toolkit
-                  
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+            
       - uses: actions/checkout@v2
         with: 
            repository: staphb_toolkit/staphb_toolkit/workflows/monroe
