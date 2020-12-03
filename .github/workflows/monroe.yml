@@ -35,7 +35,5 @@ jobs:
            path: monroe
     - name: pip install
       run: pip install staphb_toolkit   
-    - name: test monroe
-      run: |
-         monroe --version
-         monroe --help
+    - name: test staph-b      
+      run: staphb-tk
