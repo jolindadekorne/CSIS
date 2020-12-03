@@ -37,3 +37,6 @@ jobs:
       run: pip install staphb_toolkit   
     - name: test staph-b      
       run: staphb-tk
+    #Work in progress to try out the monroe pipeline with test data
+    # - name: test Monroe pipeline cluster analysis
+    # run: staphb-wf monroe cluster_analysis .fasta -o monroecluster_out.yml  
