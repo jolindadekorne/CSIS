@@ -21,7 +21,6 @@ jobs:
           
     #setup a specific python version
     steps:
-    - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -29,49 +28,13 @@ jobs:
     - name: Display Python version
       run: python -c "import sys; print(sys.version)"
 
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v1
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-    - name: Login to DockerHub
-      uses: docker/login-action@v1 
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build and push
-      id: docker_build
-      uses: docker/build-push-action@v2
-      with:
-          push: true
-          tags: user/app:latest
-          build-args: |
-            arg1=value1
-            arg2=value2
-    - name: Image digest
-      run: echo ${{ steps.docker_build.outputs.digest }}
-
-      #java version check
-    - uses: actions/checkout@v2
-    - name: Setup java
-      uses: actions/setup-java@v1
-      with:
-          java-version: ${{ matrix.java }}
-    - run: java -cp java HelloWorldApp
-        
-      #pip installation of staph toolkit. CHECK LINE: RUN
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-    - uses: BSFishy/pip-action@v1
-      with:
-        packages: |
-          staphb_toolkit  
-    - run: python main.py
-      
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
       with: 
            repository: staphb_toolkit/staphb_toolkit/workflows/monroe
            path: monroe
+    - name: pip install
+      run: pip install staphb_toolkit   
     - name: directory structure
       run: tree -d $GITHUB_WORKSPACE
     - name: ls bin dir
