@@ -37,6 +37,5 @@ jobs:
       run: pip install staphb_toolkit   
     - name: test monroe
       run: |
-         export PATH=$GITHUB_WORKSPACE/monroe/bin:$PATH
          monroe --version
          monroe --help
