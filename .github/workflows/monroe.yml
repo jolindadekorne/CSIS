@@ -17,18 +17,18 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-        - names: pip 
-        - run: pip install staphb_toolkit
+        - name: pip 
+          run: pip install staphb_toolkit
         - uses: actions/checkout@v2
-        with: 
+          with: 
            repository: staphb_toolkit/staphb_toolkit/workflows/monroe
-          path: monroe
-       - name: directory structure
-       - run: tree -d $GITHUB_WORKSPACE
-       - name: ls bin dir
-       - run: ls -lh $GITHUB_WORKSPACE/monroe/bin
-       - name: test monroe
-       - run: |
-         export PATH=$GITHUB_WORKSPACE/monroe/bin:$PATH
-         monroe --version
-         monroe --help
+           path: monroe
+        - name: directory structure
+          run: tree -d $GITHUB_WORKSPACE
+        - name: ls bin dir
+          run: ls -lh $GITHUB_WORKSPACE/monroe/bin
+        - name: test monroe
+          run: | 
+            export PATH=$GITHUB_WORKSPACE/monroe/bin:$PATH
+            monroe --version
+            monroe --help
