@@ -35,10 +35,6 @@ jobs:
            path: monroe
     - name: pip install
       run: pip install staphb_toolkit   
-    - name: directory structure
-      run: tree -d $GITHUB_WORKSPACE
-    - name: ls bin dir
-      run: ls -lh $GITHUB_WORKSPACE/monroe/bin
     - name: test monroe
       run: |
          export PATH=$GITHUB_WORKSPACE/monroe/bin:$PATH
