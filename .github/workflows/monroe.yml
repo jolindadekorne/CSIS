@@ -14,21 +14,75 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    strategy: 
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+        java: [ 8, 8.0.192, 9.0.x, 10, 11.0.x, 11.0.3, 12, 13 ]
+          
+    #setup a specific python version
     steps:
-        - names: pip 
-        - run: pip install staphb_toolkit
-        - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }
+    - name: Display Python version
+    run: python -c "import sys; print(sys.version)"
+    
+    #build and push docker? NEEDS TO BE CHECKED
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1 
+      -
+        name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: user/app:latest
+          build-args: |
+            arg1=value1
+            arg2=value2
+      -
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+      #java version check
+      - uses: actions/checkout@v2
+      - name: Setup java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - run: java -cp java HelloWorldApp
+        
+      #pip installation of staph toolkit. CHECK LINE: RUN
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+      - uses: BSFishy/pip-action@v1
+      with:
+        packages: |
+          staphb_toolkit  
+      - run: python main.py
+      
+
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
         with: 
            repository: staphb_toolkit/staphb_toolkit/workflows/monroe
           path: monroe
-       - name: directory structure
-       - run: tree -d $GITHUB_WORKSPACE
-       - name: ls bin dir
-       - run: ls -lh $GITHUB_WORKSPACE/monroe/bin
-       - name: test monroe
-       - run: |
+      - name: directory structure
+        run: tree -d $GITHUB_WORKSPACE
+      - name: ls bin dir
+        run: ls -lh $GITHUB_WORKSPACE/monroe/bin
+      - name: test monroe
+        run: |
          export PATH=$GITHUB_WORKSPACE/monroe/bin:$PATH
          monroe --version
          monroe --help
