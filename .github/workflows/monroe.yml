@@ -27,60 +27,54 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }
     - name: Display Python version
-    run: python -c "import sys; print(sys.version)"
-    
-    #build and push docker? NEEDS TO BE CHECKED
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v1 
-      -
-        name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
+      run: python -c "import sys; print(sys.version)"
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
           push: true
           tags: user/app:latest
           build-args: |
             arg1=value1
             arg2=value2
-      -
-        name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
 
       #java version check
-      - uses: actions/checkout@v2
-      - name: Setup java
-        uses: actions/setup-java@v1
-        with:
+    - uses: actions/checkout@v2
+    - name: Setup java
+      uses: actions/setup-java@v1
+      with:
           java-version: ${{ matrix.java }}
-      - run: java -cp java HelloWorldApp
+    - run: java -cp java HelloWorldApp
         
       #pip installation of staph toolkit. CHECK LINE: RUN
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
-      - uses: BSFishy/pip-action@v1
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+    - uses: BSFishy/pip-action@v1
       with:
         packages: |
           staphb_toolkit  
-      - run: python main.py
+    - run: python main.py
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-        with: 
+    - uses: actions/checkout@v2
+      with: 
            repository: staphb_toolkit/staphb_toolkit/workflows/monroe
-          path: monroe
-      - name: directory structure
-        run: tree -d $GITHUB_WORKSPACE
-      - name: ls bin dir
-        run: ls -lh $GITHUB_WORKSPACE/monroe/bin
-      - name: test monroe
-        run: |
+           path: monroe
+    - name: directory structure
+      run: tree -d $GITHUB_WORKSPACE
+    - name: ls bin dir
+      run: ls -lh $GITHUB_WORKSPACE/monroe/bin
+    - name: test monroe
+      run: |
          export PATH=$GITHUB_WORKSPACE/monroe/bin:$PATH
          monroe --version
          monroe --help
