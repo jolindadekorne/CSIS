@@ -32,8 +32,7 @@ jobs:
     - name: pip install
       run: pip install staphb_toolkit   
     - name: test staph-b      
-    - run: staphb-tk --help
-    - run: staphb-tk --list
+      run: staphb-tk --help
       
     #Work in progress to try out the monroe pipeline with test data
     - name: get pangolin test fasta file
