@@ -37,7 +37,5 @@ jobs:
       run: staphb-tk --help
       
     #Work in progress to try out the monroe pipeline with test data
-    - name: get pangolin test fasta file
-      run: wget https://github.com/cov-lineages/pangolin/tree/master/pangolin/test/test_seqs.fasta
     - name: test Monroe pipeline cluster analysis
-      run: staphb-wf monroe cluster_analysis test_seqs.fasta -o monroecluster_out 
+      run: staphb-wf monroe cluster_analysis pangolin_test -o monroecluster_out 
