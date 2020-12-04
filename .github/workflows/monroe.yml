@@ -14,19 +14,15 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    strategy: 
-      matrix:
-        python-version: [3.6, 3.7, 3.8]
-        java: [ 8, 8.0.192, 9.0.x, 10, 11.0.x, 11.0.3, 12, 13 ]
           
     #setup a specific python version
     steps:
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.8
     - name: Display Python version
-      run: python -c "import sys; print(sys.version)"
+      run: python --version
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
@@ -36,7 +32,11 @@ jobs:
     - name: pip install
       run: pip install staphb_toolkit   
     - name: test staph-b      
-      run: staphb-tk
+    - run: staphb-tk --help
+    - run: staphb-tk --list
+      
     #Work in progress to try out the monroe pipeline with test data
-    # - name: test Monroe pipeline cluster analysis
-    # run: staphb-wf monroe cluster_analysis .fasta -o monroecluster_out.yml  
+    - name: get pangolin test fasta file
+      run: wget https://github.com/cov-lineages/pangolin/tree/master/pangolin/test/test_seqs.fasta
+    - name: test Monroe pipeline cluster analysis
+      run: staphb-wf monroe cluster_analysis test_seqs.fasta -o monroecluster_out.yml  
