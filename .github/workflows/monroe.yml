@@ -38,4 +38,4 @@ jobs:
       
     #Work in progress to try out the monroe pipeline with test data
     - name: test Monroe pipeline cluster analysis
-      run: staphb-wf monroe cluster_analysis pangolin_test -o monroecluster_out 
+      run: staphb-wf monroe cluster_analysis pangolin_test 
