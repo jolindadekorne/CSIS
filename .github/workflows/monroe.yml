@@ -32,7 +32,9 @@ jobs:
     - name: pip install staphb
       run: pip install staphb_toolkit
     - name: pip install pexpect
-      run: pip install pexpect   
+      run: pip install pexpect
+    - name: check pexpect version
+      run: which pexpect  
     - name: test staph-b      
       run: staphb-tk --help
       
@@ -40,4 +42,4 @@ jobs:
     - name: get pangolin test fasta file
       run: wget https://github.com/cov-lineages/pangolin/tree/master/pangolin/test/test_seqs.fasta
     - name: test Monroe pipeline cluster analysis
-      run: staphb-wf monroe cluster_analysis test_seqs.fasta -o monroecluster_out.yml  
+      run: staphb-wf monroe cluster_analysis test_seqs.fasta -o monroecluster_out 
