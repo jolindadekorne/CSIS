@@ -33,9 +33,11 @@ jobs:
       run: pip install staphb_toolkit
     - name: pip install pexpect
       run: pip install pexpect
-    - name: test staph-b      
+    - name: test staphb-tk      
       run: staphb-tk --help
+    - name: test staphb-wf
+      run: staphb-wf --help
       
     #Work in progress to try out the monroe pipeline with test data
-    - name: test Monroe pipeline cluster analysis
-      run: staphb-wf monroe cluster_analysis pangolin_test 
+    - name: test Monroe pipeline quast tool 
+      run: staphb-tk quast pangolin_test
