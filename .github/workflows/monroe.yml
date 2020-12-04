@@ -1,4 +1,3 @@
-
 name: Monroe
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -15,31 +14,29 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+          
+    #setup a specific python version
     steps:
-        - names: apt 
-        - run: sudo apt-get update
-        - run: sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-        - run: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-        - run: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        - run: sudo apt-get update
-        - run: sudo apt-get install docker-ce docker-ce-cli containerd.io
-        - run: sudo usermod -aG docker ${USER}
-        - run: sudo su - ${USER}
-        #Not sure if all these run statements are needed, or if we can incorporate another yaml inside of this one
-        
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Display Python version
+      run: python --version
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-        with: 
-           repository: staphb_toolkit/staphb_toolkit/workflows/monroe
-          path: monroe
-      - name: directory structure
-        run: tree -d $GITHUB_WORKSPACE
-      - name: ls bin dir
-        run: ls -lh $GITHUB_WORKSPACE/monroe/bin
-      - name: test monroe
-        run: |
-         export PATH=$GITHUB_WORKSPACE/monroe/bin:$PATH
-         monroe --version
-         monroe --help
+    - uses: actions/checkout@v2
+      with: 
+           repository: StaPH-B/staphb_toolkit
+           path: monroe
+    - name: pip install
+      run: pip install staphb_toolkit   
+    - name: test staph-b      
+    - run: staphb-tk --help
+    - run: staphb-tk --list
+      
+    #Work in progress to try out the monroe pipeline with test data
+    - name: get pangolin test fasta file
+      run: wget https://github.com/cov-lineages/pangolin/tree/master/pangolin/test/test_seqs.fasta
+    - name: test Monroe pipeline cluster analysis
+      run: staphb-wf monroe cluster_analysis test_seqs.fasta -o monroecluster_out.yml  
