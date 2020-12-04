@@ -29,8 +29,10 @@ jobs:
       with: 
            repository: StaPH-B/staphb_toolkit
            path: monroe
-    - name: pip install
-      run: pip install staphb_toolkit   
+    - name: pip install staphb
+      run: pip install staphb_toolkit
+    - name: pip install pexpect
+      run: pip install pexpect   
     - name: test staph-b      
       run: staphb-tk --help
       
